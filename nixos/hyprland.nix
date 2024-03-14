@@ -7,15 +7,15 @@
   environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
 
   environment.systemPackages = with pkgs; [
-    wezterm
-    cool-retro-term
+    alacritty # Terminal
+    #wezterm # Terminal
 
-    starship
-    helix
+    starship # Fancy shell prompt
+    helix # Nvim alternative in Rust
 
-    qutebrowser
-    zathura
-    mpv
-    imv
+    firefox # Browser
+    zathura # Document viewer
+    mpv # Media player
+    imv # Image viewer
   ];
 }

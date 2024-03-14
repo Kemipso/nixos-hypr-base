@@ -6,7 +6,7 @@ plugins = [
 ]
 
 [scratchpads.term]
-command = "wezterm start --class wezterm_dropdown"
+command = "alacritty"
 animation = "fromTop"
 unfocus = "hide"
 excludes = "*"

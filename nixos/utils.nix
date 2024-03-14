@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    mold
+    mold # Faster linker
     gcc13
     jdk11
   ];

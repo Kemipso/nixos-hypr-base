@@ -2,9 +2,9 @@
 
 {
   environment.systemPackages = with pkgs; [
-    slack
-    aws-sam-cli
-    awscli2
+    #slack
+    #aws-sam-cli
+    #awscli2
     cargo-lambda
     gnumake
   ];

@@ -1,6 +1,6 @@
 [user]
-	email = artem.shv@proton.me
-	name = xnm
+	email = hugovigne@gmail.com
+	name = hvigne
 [credential "https://github.com"]
 	helper = 
 	helper = !/run/current-system/sw/bin/gh auth git-credential

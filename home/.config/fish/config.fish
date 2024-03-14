@@ -5,9 +5,9 @@ end
 alias cl="clear"
 alias lgit="lazygit"
 alias ldocker="lazydocker"
-alias conf="z ~/.config"
-alias nixos="z /etc/nixos"
-alias store="z /nix/store"
+alias conf="cd ~/.config"
+alias nixos="cd /etc/nixos"
+alias store="cd /nix/store"
 alias nswitch="sudo nixos-rebuild switch --flake /etc/nixos"
 alias nswitchu="sudo nixos-rebuild switch --flake /etc/nixos --update-input nixpkgs --update-input rust-overlay --commit-lock-file --upgrade"
 alias nau="sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos"
@@ -18,7 +18,8 @@ alias ngc="sudo nix-collect-garbage -d"
 #   exec Hyprland
 # end
 
-set -gx EDITOR hx
+#set -gx EDITOR hx
+set -gx EDITOR nvim
 set -gx VOLUME_STEP 5
 set -gx BRIGHTNESS_STEP 5
 
@@ -35,5 +36,5 @@ set -Ux FZF_DEFAULT_OPTS "\
 --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
 
 starship init fish | source
-zoxide init fish | source
+#zoxide init fish | source
 direnv hook fish | source

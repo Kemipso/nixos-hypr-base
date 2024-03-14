@@ -8,37 +8,76 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.blacklistedKernelModules = [ "nouveau" "nvidia" ]; # Disable NVIDIA video cards
-  boot.kernelParams = [ "i915.enable_guc=2" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
- # FIXME: Use your auto-generated `hardware-configuration.nix` instead of this file, you can tweak your `hardware-configuration.nix` using snippets from this file
+  fileSystems."/" =
+    { device = "none";
+      fsType = "tmpfs";
+      options = ["defaults" "size=8G" "mode=755" ];
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/0AA0-4351";
+      fsType = "vfat";
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/5110ab0f-2c99-4a2f-86a9-d85ce70cbd32";
+      fsType = "btrfs";
+      options = [ "subvol=@home"
+	"compress=zstd"
+	"discard=async"
+	"noatime"
+	 ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/5110ab0f-2c99-4a2f-86a9-d85ce70cbd32";
+      fsType = "btrfs";
+      options = [ "subvol=@nix"
+	"compress=zstd"
+	"discard=async"
+	"noatime"
+	];
+    };
+
+  fileSystems."/etc/nixos" =
+    { device = "/nix/@nix/persist/etc/nixos";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+  fileSystems."/var/log" =
+    { device = "/nix/@nix/persist/var/log";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
+  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  
-  nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
-  };
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    extraPackages = with pkgs; [
-      intel-compute-runtime
-      intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
+  hardware = {
+  cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  # Nvidia ?
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
+  nvidia.modesetting.enable = true;
+  nvidia.open = false;
+  nvidia.nvidiaSettings = true;
+  nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  opengl.extraPackages = with pkgs; [ vaapiVdpau ];
   };
 }

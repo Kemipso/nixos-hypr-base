@@ -8,9 +8,9 @@
     "position": "top", // Waybar position (top|bottom|left|right)
     "height": 36, // Waybar height (to be removed for auto height)
     "spacing": 4, // Gaps between modules (4px)
-    "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+    "modules-left": ["hyprland/workspaces", "hyprland/submap", "hyprland/window"],
     "modules-center": ["clock#time", "custom/separator", "clock#week", "custom/separator_dot", "clock#month", "custom/separator", "clock#calendar"],
-    "modules-right": [ "bluetooth", "network", "group/misc", "custom/logout_menu" ],
+    "modules-right": ["keyboard-state", "hyprland/language", "bluetooth", "network", "group/misc", "custom/logout_menu" ],
 
     // Modules Config
     "hyprland/workspaces": {
@@ -40,6 +40,11 @@
     "hyprland/submap": {
         "format": "<span color='#a6da95'>Mode:</span> {}",
         "tooltip": false,
+    },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 50,
     },
 
     "clock#time": {
@@ -128,6 +133,24 @@
         "on-scroll-down": "playerctl volume 0.05+",
         "smooth-scrolling-threshold": "0.1",
     },
+    
+    "hyprland/language": {
+        //"format-fr": "FR FRA",
+        //"format-en": "🇺🇸 ENG (US)",
+        //"format-uk": "🇺🇦 UKR",
+        //"format-ru": "🇷🇺 RUS",
+        "on-click": "~/.config/hypr/scripts/keyboardswitch.sh",
+    },
+
+    "keyboard-state": {
+        "capslock": true,
+        // "numlock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
 
     "bluetooth": {
         "format": "󰂯",
@@ -147,18 +170,21 @@
 
     "network": {
         "format": "󰤭",
+	//"family": "ipv6",
+        "format-ethernet": "󰈀 ",
         "format-wifi": "{icon}({signalStrength}%){essid}",
+        "tooltip-format-wifi":"Network: <big><b>{essid}</big>({signalStrength}%</b>)\nSignal strength: {signaldBm}dBm {frequency} MHz\nInterface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}\n\n<span color='#a6da95'>{bandwidthUpBits}</span>\t<span color='#ee99a0'>{bandwidthDownBits}</span>",
         "format-icons": [ "󰤯", "󰤟", "󰤢", "󰤥", "󰤨" ],
-        "format-disconnected": "󰤫 Disconnected",
-        "tooltip-format": "wifi <span color='#ee99a0'>off</span>",
-        "tooltip-format-wifi":"SSID: {essid}({signalStrength}%), {frequency} MHz\nInterface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}\n\n<span color='#a6da95'>{bandwidthUpBits}</span>\t<span color='#ee99a0'>{bandwidthDownBits}</span>\t<span color='#c6a0f6'>󰹹{bandwidthTotalBits}</span>",
+        "format-disconnected": "󰤫 ",
         "tooltip-format-disconnected": "<span color='#ed8796'>disconnected</span>",
-        // "format-ethernet": "󰈀 {ipaddr}/{cidr}",
-        // "format-linked": "󰈀 {ifname} (No IP)",
-        // "tooltip-format-ethernet":"Interface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}\nNetmask: {netmask}\nCIDR: {cidr}\n\n<span color='#a6da95'>{bandwidthUpBits}</span>\t<span color='#ee99a0'>{bandwidthDownBits}</span>\t<span color='#c6a0f6'>󰹹{bandwidthTotalBits}</span>",
+        "tooltip-format": "wifi <span color='#ee99a0'>off</span>",
+        "format-linked": "󰈀 {ifname} (No IP)",
+        "tooltip-format-ethernet":"Interface: {ifname}\nIP: {ipaddr}/{cidr}\nGW: {gwaddr}\n\n<span color='#a6da95'>{bandwidthUpBits}</span>\t<span color='#ee99a0'>{bandwidthDownBits}</span>",
         "max-length": 35,
-        "on-click": "fish -c wifi_toggle",
-        "on-click-right": "wezterm start nmtui",
+        "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
+	"interval": 2,
+        //"on-click": "fish -c wifi_toggle",
+        "on-click-right": "alacritty -e nmtui",
     },
 
     "group/misc": {
@@ -228,49 +254,6 @@
     },
  
 },
-
-
-// Bottom Bar Config
-{
-    // Main Config
-    "name": "bottom_bar",
-    "layer": "top", // Waybar at top layer
-    "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 36, // Waybar height (to be removed for auto height)
-    "spacing": 4, // Gaps between modules (4px)
-    "modules-left": ["user"],
-    "modules-center": ["hyprland/window"],
-    "modules-right": ["keyboard-state", "hyprland/language"],
-
-    // Modules Config
-    "hyprland/window": {
-        "format": "👼 {title} 😈",
-        "max-length": 50,
-    },
-
-    "hyprland/language": {
-        "format-en": "🇺🇸 ENG (US)",
-        "format-uk": "🇺🇦 UKR",
-        "format-ru": "🇷🇺 RUS",
-        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next",
-    },
-
-    "keyboard-state": {
-        "capslock": true,
-        // "numlock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
-
-    "user": {
-        "format": "<span color='#8bd5ca'>{user}</span> (up <span color='#f5bde6'>{work_d} d</span> <span color='#8aadf4'>{work_H} h</span> <span color='#eed49f'>{work_M} min</span> <span color='#a6da95'>↑</span>)",
-        "icon": true,
-    },
-},
-
 
 // Left Bar Config
 {
@@ -430,5 +413,6 @@
         "reverse-mouse-scrolling": true,
         "on-click": "pavucontrol",
     },
+
 },
 ]

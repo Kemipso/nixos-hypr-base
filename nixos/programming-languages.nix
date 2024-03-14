@@ -7,7 +7,5 @@
     nodePackages_latest.nodejs
     bun
     lua
-    zig
-    numbat
   ];
 }

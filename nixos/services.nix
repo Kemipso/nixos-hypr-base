@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   # Systemd services setup
@@ -14,15 +14,24 @@
   programs.dconf.enable = true;
   services.dbus.enable = true;
   services.dbus.packages = with pkgs; [
-  	xfce.xfconf
-  	gnome2.GConf
+  	#xfce.xfconf
+  	#gnome2.GConf
   ];
   services.mpd.enable = true;
   programs.thunar.enable = true;
   services.tumbler.enable = true; 
   services.fwupd.enable = true;
   services.auto-cpufreq.enable = true;
+
+  # Btrfs scrubbing once a month
+  services.btrfs.autoScrub.enable = true;
+  # ZFS scrubbing once a week
+  services.zfs.autoScrub.enable = true;
+
   # services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
+  # Nvidia
+  services.xserver.videoDrivers = lib.mkDefault [ "nvidia" ];
 
   environment.systemPackages = with pkgs; [
     at-spi2-atk
@@ -51,10 +60,10 @@
     waybar
     rofi-wayland
     dunst
-    avizo
+    #avizo
     wlogout
     wpaperd
     # swww
-    gifsicle
+    #gifsicle
   ];
 }

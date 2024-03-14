@@ -4,12 +4,12 @@ clock
 screenshots
 
 effect-blur=11x11
-effect-compose=1100,10;/home/xnm/.config/swaylock/rebecca.png
-effect-compose=20,0;40%x100%;/home/xnm/.config/swaylock/lucy.png
+#effect-compose=1100,10;/home/hvigne/.config/swaylock/rebecca.png
+#effect-compose=20,0;40%x100%;/home/hvigne/.config/swaylock/lucy.png
 font=JetBrains Mono
-indicator-radius=80
-indicator-thickness=8
-timestr=%I:%M %p
+indicator-radius=150
+indicator-thickness=10
+timestr=%H:%M
 datestr=%F
 
 inside-color=#181926
@@ -31,3 +31,7 @@ text-ver-color=#1e2030
 inside-wrong-color=#ee99a0
 ring-wrong-color=#ed8796
 text-wrong-color=#1e2030
+
+grace=2
+fade-in=0.3
+ignore-empty-password

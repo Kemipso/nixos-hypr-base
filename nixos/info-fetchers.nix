@@ -4,10 +4,10 @@
   environment.systemPackages = with pkgs; [
     neofetch
     onefetch
-    ipfetch
-    cpufetch
-    starfetch
-    octofetch
+    #ipfetch
+    #cpufetch
+    #starfetch
+    #octofetch
     htop
     bottom
     btop
